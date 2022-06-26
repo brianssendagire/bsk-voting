@@ -1,0 +1,124 @@
+{% load static %}
+{% load custom_tags %}
+<style type="text/css">
+     nav{
+    height: 80px;
+    position: sticky;
+    z-index: 9;
+    }
+    nav ul a,
+    nav {
+      color: #444;
+    }
+
+    nav .nav-wrapper{
+        padding-top: 5px;
+    }
+
+    p {
+      line-height: 2rem;
+    }
+
+    .sidenav-trigger {
+      color: #26a69a;
+    }
+
+    .brand-logo{
+        position: relative;
+        max-height: 100px;
+    }
+
+    .brand-logo .logo_image{
+        max-height: 68px;
+        margin-top: 0%;
+    }
+
+    .active{
+        font-weight: 500;
+        color: #8AAE14;
+    }
+
+    .carousel .indicators{
+
+    }
+
+    .carousel.carousel-slider .carousel-item{
+        min-height: 305px;
+    }
+
+    .carousel {
+        height: 300px;
+    }
+
+    .material-icons.link-icon{
+        padding: 8px;
+	}
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+<div class="">
+    <nav class="white z-depth-2 valign" role="navigation">
+        {% with request.resolver_match.url_name as url_name %}
+        <div class="nav-wrapper ml30 mr50">
+            <a href="{% url 'home' %}" class="brand-logo">
+                <img src="{% static 'images/logo.png' %}" class="logo_image">
+            </a>
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <a class="p-2 {% if url_name == 'home' or url_name == 'admin_home' or url_name == 'user' %}active{% else %}text-dark{% endif %}"
+                       href="{% url 'home' %}">
+                        <i class="fa fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a class="p-2 {% if url_name == 'register' %}active{% else %}text-dark{% endif %}"
+                       href="{% url 'register' %}">
+                        <i class="fas fa-user-plus" style="font-weight: 400px; font-size: 1.1em; padding-top: 3px;"></i> Register
+                    </a>
+                </li>
+                <li>
+                    <a class="p-2 {% if url_name == 'faqs' %}active{% else %}text-dark{% endif %}"
+                       href="{% url 'faqs' %}">
+                        <i class="far fa-question-circle" style="font-weight: 400px; font-size: 1.1em; padding-top: 3px;"></i> FAQs
+                    </a>
+                </li>
+            </ul>
+            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+        {% endwith %}
+    </nav>
+    <ul id="nav-mobile" class="nav-link-section sidenav">
+        <li><a class="p-2 text-dark" href="{% url 'home' %}">Home</a></li>
+        <li>
+            <a class="p-2 {% if url_name == 'register' %}active{% else %}text-dark{% endif %}"
+               href="{% url 'register' %}">
+                <i class="fas fa-user-plus" style="font-weight: 400px; font-size: 1.1em; padding-top: 3px;"></i> Register
+            </a>
+        </li>
+        <li>
+            <a class="p-2 {% if url_name == 'faqs' %}active{% else %}text-dark{% endif %}"
+               href="{% url 'faqs' %}">
+                <i class="far fa-question-circle" style="font-weight: 400px; font-size: 1.1em; padding-top: 3px;"></i> FAQs
+            </a>
+        </li>
+    </ul>
+    <script type="text/javascript">
+        var elem = document.querySelector('.sidenav');
+        var instance = new M.Sidenav(elem);
+        $(document).ready(function() {
+            $('#dropdown_trigger').dropdown();
+        });
+
+
+    </script>
+</div>

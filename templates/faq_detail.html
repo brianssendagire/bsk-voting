@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load material_form %}
+
+{% block content %}
+<style type="text/css">
+    .btn,
+.btn-large,
+.btn-small,
+.btn-flat {
+   border-radius: 4px;
+   font-weight: 500;
+}
+
+.card:hover {
+   box-shadow: 0px 10px 35px 0px rgba(0, 0, 0, 0.18);
+}
+
+.card {
+   border-radius: 6px;
+   box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.15);
+}
+
+a.faq_link{
+    color: #1b5e20;
+}
+
+a.faq_link:hover{
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+<div class="ml50 mr50 mt50">
+    <h4 class="center">{{faq_category.title}}</h4>
+    {% if faq %}
+    <div class="mt30">
+        {% if faq.subtitle%}
+        <h5>
+            <strong>{{faq.subtitle}}</strong>
+        </h5>
+        {% endif %}
+        <h6><strong>{{faq.question}}</strong></h6>
+        <p>{{faq.answer}}</p>
+        <div class="divider"></div>
+    </div>
+    {% else %}
+    <p>No details on this FAQ available at the moment.</p>
+    {% endif %}
+</div>
+
+{% endblock content %}

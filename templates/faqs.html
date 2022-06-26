@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load material_form %}
+
+{% block content %}
+<style type="text/css">
+    .btn,
+.btn-large,
+.btn-small,
+.btn-flat {
+   border-radius: 4px;
+   font-weight: 500;
+}
+
+.card:hover {
+   box-shadow: 0px 10px 35px 0px rgba(0, 0, 0, 0.18);
+}
+
+.card {
+   border-radius: 6px;
+   box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.15);
+}
+
+a.faq_link{
+    color: #1b5e20;
+}
+
+a.faq_link:hover{
+    color: #2e7d32;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+<div class="ml50 mr50 pb40">
+    <h3 class="center">Frequently Asked Questions</h3>
+    <div class="mt30">
+        {% if faqs %}
+        {% for faq in faqs %}
+        <div>
+            <h5>
+                <a href="{% url 'faq_detail' faq.slug %}" class="faq_link">{{faq.question}}
+                    <span class="right">
+                    <i data-test="fa" class="fa fa-angle-double-right" style="font-size: 0.6em; color: #2e7d32;"></i>
+                </span>
+                </a>
+            </h5>
+            <p class="faq-description">{{faq.answer}}</p>
+            <div class="divider"></div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No FAQs available at the moment.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('select').formSelect();
+});
+
+function anyThing(destroyFeedback) {
+  setTimeout(function(){ destroyFeedback(true); }, 1500);
+}
+
+function noThing(destroyFeedback) {
+  setTimeout(function(){ destroyFeedback(true); }, 10000);
+}
+
+var stepperDiv = document.querySelector('.stepper');
+var stepper = new MStepper(stepperDiv);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+{% endblock content %}

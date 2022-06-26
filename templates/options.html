@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load material_form %}
+{% load custom_tags %}
+{% block title %}Home{% endblock title %}
+{% block content %}
+<style>
+    label{
+        color: #555 !important;
+        font-size: 1.05rem !important;
+    }
+
+    .divider{
+        margin-top: -5px;
+        margin-bottom: 15px;
+    }
+
+    #id_student_id_container{
+        margin-top: 25px;
+    }
+
+    .remove-elem{
+        display: none;
+    }
+
+    .errors{
+        margin-top: 7px;
+    }
+
+    .warning-result{
+        margin-top: 5px;
+    }
+
+    #id_student_id_container{
+        margin-bottom: 5px;
+    }
+
+    #id_student_id{
+        text-transform: uppercase;
+    }
+
+
+
+</style>
+<div class="container mt40">
+    <div class="card pl30 pr30 ml40 mr40 pt20 pb20">
+        <h4 class="" style="font-weight: 200;">Welcome to BSK Voting!</h4>
+        <p>You have a chance to vote or become a nominee. Select an option below</p>
+        <div class="divider"></div>
+        <div class="card-body">
+            <div class="option-section">
+                <form method="post" enctype="multipart/form-data" id="option_form">{% csrf_token %}
+                    {% form form=option_form %}{% endform %}
+                </form>
+            </div>
+            <div class="action-section">
+                <div class="row mt20 mb20" style="margin-right: auto;">
+                    <a class="waves-effect waves-light btn green darken-1" id="submit_btn">SUBMIT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    // Disable submission if option is vote and no student ID
+    var vote_cont = document.querySelector('#id_vote_for_container');
+    vote_cont.classList.add('remove-elem');
+
+     $(document).ready(function() {
+        {% for message in messages %}
+        {% if forloop.first %}
+        var msg = "{{ message|safe }}";
+        var tag = "{{ message.tags }}";
+        displayMessage(msg);
+        {% endif %}
+        {% endfor %}
+
+        function displayMessage(msg){
+            var cols = "";
+            cols += `<p class='message-info'>${msg}</p>`;
+            const container = $('.container');
+
+            $(container).find('.message-info').remove();
+            container.parent('div').prepend(cols);
+        }
+
+        $('#id_student_id').on('input', function(e){
+            const _id = $(this).val().toUpperCase();
+            if(_id.length > 0 && _id.length > 6){
+                 $.ajax({
+                    type: 'POST',
+                    url: '{% url 'verify_id' %}',
+                    data: {
+                        'student_id': _id,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        const message = data.message;
+                        const status = data.status;
+
+                        if(status == 404){
+                            var cols = "";
+                            const url = "<a href='/register'>here</a>";
+                            cols += `<div class="warning-result">Dear student, we could not find your Student ID <b>${_id}</b>, please click
+                            <b>${url}</b> to Register
+                            .</div>`;
+                            const elem = $('.option-section').find('#id_student_id_container');
+
+                            elem.find('.warning-result').remove();
+                            elem.append(cols);
+                        }else if(status == 200){
+                            var cols = "";
+                            const url = "<a href='/register'>here</a>";
+                            cols += `<div class="warning-result">Your Student ID <b>${_id}</b> is valid. You can proceed to vote.
+                            .</div>`;
+                            const elem = $('.option-section').find('#id_student_id_container');
+
+                            elem.find('.warning-result').remove();
+                            elem.append(cols);
+                        }
+                      }
+                });
+            }else{
+                $('.warning-result').remove();
+            }
+        });
+
+        $('#id_vote_for').on('change', function(e){
+            vote_for = $(this).val();
+
+            if(vote_for){
+                $('#id_vote_for_container').find('.errors').remove();
+            }
+        });
+
+        $('input[name="choice"]').on('change', function(e){
+            const post = $('#id_post').val();
+            const choice = $(this).val();
+
+            console.log(choice);
+            if(post && choice == 'Vote'){
+                $('#id_vote_for_container').slideDown();
+            }else{
+                $('#id_vote_for_container').slideUp();
+            }
+        });
+
+        $('#id_post').on('change', function(e){
+            const post = $(this).val();
+            const choice = $('input[name="choice"]:checked').val();
+
+            if(post && choice == 'Vote'){
+                $('#id_post_container').find('.errors').remove();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'get_nominees' %}',
+                    data: {
+                        'post': post,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        arr = [];
+                        const nominees = JSON.parse(data.nominees);
+
+                        const field = $('<div class="input-field nominee-field col s12">');
+                        const select = $("#id_vote_for");
+                        // select.append('<option value="" disabled selected>Choose a nominee</option>')
+
+                        var cols = "";
+                        options = select.find('option:not(:first-child)');
+                        for(const i of options){
+                            i.remove();
+                        }
+
+                        for(const i in nominees){
+                            const _nom = nominees[i];
+                            const _id = _nom.id;
+                            const name = _nom.name;
+                            var col = `<option value="${_id}">${name}</option>`;
+                            select.append(col);
+                        }
+                        $('#id_vote_for_container').removeClass('remove-elem');
+                        $('select').formSelect();
+                    }
+                });
+            }
+        });
+
+        $('#submit_btn').on('click', function(e){
+            const choice = $('input[name="choice"]:checked').val();
+            const student_id = $('#id_student_id').val();
+
+            if(!student_id){
+                // Display error
+                var cols = "";
+                cols += '<div class="errors"><small class="error">Student ID must be provided.</small></div>';
+                const elem = $('#id_student_id_container');
+
+                if($(elem).find('.errors').length == 0){
+                    elem.append(cols);
+                }
+            }else if(student_id){
+                $('#option_form').submit();
+            }
+        });
+
+        $("#option_form").on('submit', function (e) {
+                e.preventDefault();
+                const serializedData = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'compute_option' %}',
+                    data: serializedData,
+                    success: function(data){
+                        const message = data.message;
+                        const status = data.status;
+
+                        if(status == 200){
+                            displayMessage(message);
+                            setTimeout(function(){
+                                window.location.reload();
+                            }, 3000)
+                        }else if(status == 404){
+                            var cols = "";
+                            const url = "<a href='/register'>here</a>";
+                            cols += `<div class="warning-result">Dear student, we could not find your Student ID, please click ${url} to
+                            Register
+                            .</div>`;
+                            const elem = $('.option-section');
+
+                            if($(elem).find('.warning-result').length == 0){
+                                elem.append(cols);
+                            }
+                        }else if(status == 500){
+                            // msg = JSON.parse(message);
+                            const focus = data.focus;
+                            console.log(focus);
+                            if(focus){
+                                var cols = "";
+                                cols += `<div class="errors"><small class="error">${message}</small></div>`;
+                                const el = $(`#id_${focus}_container`);
+                                $(el).find('.errors').remove();
+                                el.append(cols);
+                            }
+                        }
+                    }
+                });
+             });
+     });
+
+
+</script>
+{% endblock content %}

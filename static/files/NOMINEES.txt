@@ -1,0 +1,25 @@
+position,ID,First Name,Last Name,Class,House
+Entertainment prefers,AW451KA,Addison,Waller,YR12,Karuma
+Health and environment prefect,CC098BU,Carlos,Combs,YR8,Bujagali
+Head prefect,CB516IT,Cassie,Brady,YR12,Itanda
+Deputy Sports prefects,CH839BU,Celia,Hill,YR9,Bujagali
+Deputy Entertainment prefers,CE084SI,Colby,Evans,YR8,Sipi
+Deputy head boy,DV172SI,Derrick,Vega,YR10,Sipi
+General Duties prefect,ER947KA,Eileen,Riggs,YR9,Karuma
+Deputy Sports prefects,ER947KA,Eileen,Riggs,YR9,Karuma
+Head boy,GW256SI,Giovani,Wall,YR12,Sipi
+Academic prefects,IB436KA,Ingrid,Blankenship,YR10,Karuma
+Academic prefects,IM572IT,Isai,Mills,YR12,Itanda
+Health and environment prefect,JP929KA,Jakobe,Parrish,YR9,Karuma
+Library and Information prefect,KP740SI,Kael,Peters,YR9,Sipi
+Sports prefects,KM831BU,Keagan,Mora,YR12,Bujagali
+Library and Information prefect,KR748IT,Kelly,Ramos,YR8,Itanda
+General Duties prefect,KL137IT,Kenneth,Lozano,YR9,Itanda
+Deputy head girl,KV778SI,Kiara,Vega,YR10,Sipi
+Head girl,KB951KA,Kirsten,Bradford,YR12,Karuma
+Deputy General Duties prefect,NB116KA,Niko,Bradshaw,YR10,Karuma
+Head prefect,RC773BU,Riley,Charles,YR12,Bujagali
+Deputy head boy,RH931KA,Rogelio,Hines,YR10,Karuma
+Head boy,RC886KA,Royce,Carney,YR12,Karuma
+Head girl,SH870IT,Savanna,Huynh,YR12,Itanda
+Deputy Academic prefects,TR051BU,Tiana,Rodgers,YR7,Bujagali

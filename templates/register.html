@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load material_form %}
+{% load custom_tags %}
+{% block title %}Register{% endblock title %}
+{% block content %}
+<style>
+    label{
+        color: #555 !important;
+    }
+
+    .divider{
+        margin-top: -5px;
+        margin-bottom: 15px;
+    }
+
+    #id_student_id_container{
+        margin-top: 25px;
+    }
+
+    .remove-elem{
+        display: none;
+    }
+
+    .errors{
+        margin-top: 7px;
+    }
+
+
+</style>
+<div class="container mt40">
+    <div class="card pl30 pr30 ml40 mr40 pt20 pb20">
+        <h4 class="" style="font-weight: 200;">Registration</h4>
+        <p>Please provide your school details below</p>
+        <div class="divider"></div>
+        <div class="card-body">
+            <div class="option-section">
+                <form method="post" enctype="multipart/form-data" id="register_form">{% csrf_token %}
+                    {% form form=register_form %}{% endform %}
+                </form>
+            </div>
+            <div class="action-section">
+                <div class="row mt20 mb20" style="margin-right: auto;">
+                    <a class="waves-effect waves-light btn green darken-1" id="submit_btn">SUBMIT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#submit_btn').on('click', function(e){
+        $('#register_form').submit();
+    });
+</script>
+{% endblock content %}
