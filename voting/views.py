@@ -90,12 +90,12 @@ class RegisterView(View):
             return redirect('home')
         return render(request, self.template_name, context)
 
-
+# Function to generate student ID
 def generate_id(**kwargs):
     f_name = kwargs['first_name'].upper()
     l_name = kwargs['last_name'].upper()
     house = kwargs['house'].upper()
-    num = random.randint(0, 999)
+    num = random.randint(0, 999) # generates random number between 0 and 1000 i.e. 0 is min and 999 is max
 
     digits = calculate_digits(num)
     _seq = f"0{num}" if digits == 2 else str(num)
