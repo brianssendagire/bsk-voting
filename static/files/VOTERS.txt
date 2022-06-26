@@ -1,1 +1,2 @@
 ID,position,Candidate,First Name,Last Name,Class,House
+DV172SI,Head boy,GW256SI,Derrick,Vega,YR10,Sipi

@@ -23,3 +23,4 @@ Deputy head boy,RH931KA,Rogelio,Hines,YR10,Karuma
 Head boy,RC886KA,Royce,Carney,YR12,Karuma
 Head girl,SH870IT,Savanna,Huynh,YR12,Itanda
 Deputy Academic prefects,TR051BU,Tiana,Rodgers,YR7,Bujagali
+House prefect,TS279SI,Taylor,Stanley,YR11,Sipi
