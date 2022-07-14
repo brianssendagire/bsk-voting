@@ -43,7 +43,6 @@ class HomeView(View):
             choice = form.cleaned_data['choice']
 
             # {"__all__": [{"message": "You need to choose a nominee from the dropdown list", "code": ""}]}
-
             if choice == 'Vote':
                 if student_id:  # TODO flag if student_id is not provided
                     exists, name, status = find_student(student_id)
@@ -76,7 +75,6 @@ class RegisterView(View):
             last_name = form.cleaned_data['last_name']
             student_class = form.cleaned_data['student_class']
             student_house = form.cleaned_data['student_house']
-
             file_path = os.path.join(settings.STATIC_ROOT, 'files/STUDENTS.txt')
             exists, _id = check_student_exists(first_name.title(), last_name.title(), student_class, student_house)
             message = f"You are already registered with ID {_id}."
@@ -110,7 +108,8 @@ def calculate_digits(n): return int(math.log10(n)) + 1
 def get_nominees(request):
     if request.method == 'POST':
         post = request.POST['post']
-        nominees = populate_nominees(post)
+        student_id = request.POST['student_id']
+        nominees = populate_nominees(post, student_id)
         return JsonResponse({'nominees': json.dumps(nominees)}, status=201)
 
 

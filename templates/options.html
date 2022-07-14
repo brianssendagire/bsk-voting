@@ -149,14 +149,16 @@
         $('#id_post').on('change', function(e){
             const post = $(this).val();
             const choice = $('input[name="choice"]:checked').val();
+            const student_id = $('#id_student_id').val();
 
-            if(post && choice == 'Vote'){
+            if(post && choice == 'Vote' && student_id){
                 $('#id_post_container').find('.errors').remove();
                 $.ajax({
-                    type: 'POST',
+                    type: 'POST', // Submit data to a url, use POST
                     url: '{% url 'get_nominees' %}',
                     data: {
                         'post': post,
+                        'student_id': student_id,
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     dataType: 'json',

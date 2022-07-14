@@ -2,7 +2,7 @@ import os
 
 from django.conf import settings
 
-from .config import INELIGIBLE_FOR_HEAD_PREFECT, INELIGIBLE_FOR_DEPUTY
+from .config import INELIGIBLE_FOR_HEAD_PREFECT, INELIGIBLE_FOR_DEPUTY, CANDIDATES
 
 
 def find_student(student_id):
@@ -61,6 +61,8 @@ def check_nominee_validity(student_id, post):
                     eligible = False
                 elif line[3] in INELIGIBLE_FOR_DEPUTY and post in ['Deputy head boy', 'Deputy head girl']:
                     eligible = False
+                elif line[3] in CANDIDATES:
+                    eligible = False
                 break
     return eligible
 
@@ -109,15 +111,27 @@ def populate_posts():
     return posts
 
 
-def populate_nominees(post):
+"""
+1) Interested in house of voter
+2) Compare house of voter with house of house prefect
+3) If post == 'House prefect' 
+"""
+
+
+def populate_nominees(post, student_id):
     file_path = os.path.join(settings.STATIC_ROOT, 'files/NOMINEES.txt')
     nominees = []
-    with open(file_path, 'rb') as f:
-        for line in f.readlines():
-            line = line.decode('utf8').strip().split(',')
-            if post == line[0]:
-                _p = line[0]
-                student_id = line[1]
-                name = line[2] + ' ' + line[3]
-                nominees.append({'id': student_id, 'name': name})
+    exists, student = get_details(student_id)
+    if exists:
+        with open(file_path, 'rb') as f:
+            for line in f.readlines():
+                line = line.decode('utf8').strip().split(',')
+                if post == line[0]:  # e.g. If selected post (Head prefect) == item at index 0 of Nominees file (the post)
+                    _p = line[0]
+                    student_id = line[1]
+                    name = line[2] + ' ' + line[3]
+                    if post == 'House prefect' and student['house'] == line[5]:
+                        nominees.append({'id': student_id, 'name': name})
+                    else:
+                        nominees.append({'id': student_id, 'name': name})
     return nominees
