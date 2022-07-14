@@ -1,0 +1,51 @@
+{% load material_form %}
+<style>
+    .input-field{
+        margin-top: -.5rem;
+        margin-bottom: -5rem;
+    }
+    .card .filter-content{
+        padding: 10px 25px 10px 15px !important;
+        margin-bottom: -18px;
+    }
+
+    #filter_action{
+            white-space: nowrap;
+    }
+
+    @media only screen and (max-width: 500px) {
+        #filter_form .row{
+            margin-bottom: 20px;
+        }
+        #id_end_date_container{
+            margin-top: 1.2rem;
+        }
+        #id_status_container{
+            margin-top: 3.4rem;
+        }
+        #filter_action{
+            margin-top: -2rem;
+            padding-left: 0;
+
+        }
+    }
+
+
+
+</style>
+
+<div class="card mt20">
+    <div class="card-content filter-content">
+        <form method="get" name="filter_form" id="filter_form">{% csrf_token %}
+            <div class="row">
+                <div class="col m6 s12">{% form form=filter_form %}{% endform %}</div>
+                <div class="col m6 s12" id="filter_action">
+                    <a class="waves-effect waves-dark btn-small green darken-1"
+                       id="filter_submit_btn" style="min-height: 33px; margin-top: .23rem; margin-left: 1.2rem;">Filter</a>
+                    <a id="filter_reset_btn" class="waves-effect waves-light btn-small blue darken-2"
+                       style="min-height: 33px; margin-top: .23rem; margin-left: .3rem;">Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

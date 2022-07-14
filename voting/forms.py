@@ -21,6 +21,16 @@ class OptionForm(forms.Form):
     layout = Layout('choice', 'student_id', 'post', 'vote_for')
 
 
+class ResultsForm(forms.Form):
+    post = forms.ChoiceField(choices=(), label="", help_text="Choose a post to show results.", required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(ResultsForm, self).__init__(*args, **kwargs)
+        self.fields['post'].choices = populate_posts()
+
+    layout = Layout(Row('post'))
+
+
 class RegisterForm(forms.Form):
     # student_id = forms.CharField(label='Student ID', help_text="Specify your student ID", widget=forms.TextInput(attrs={'placeholder': ""}))
     first_name = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'placeholder': ''}))

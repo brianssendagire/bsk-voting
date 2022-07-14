@@ -81,6 +81,12 @@
                     </a>
                 </li>
                 <li>
+                    <a class="p-2 {% if url_name == 'results' %}active{% else %}text-dark{% endif %}"
+                       href="{% url 'results' %}">
+                        <i class="fas fa-chart-bar" style="font-weight: 400px; font-size: 1.1em; padding-top: 3px;"></i> Results
+                    </a>
+                </li>
+                <li>
                     <a class="p-2 {% if url_name == 'register' %}active{% else %}text-dark{% endif %}"
                        href="{% url 'register' %}">
                         <i class="fas fa-user-plus" style="font-weight: 400px; font-size: 1.1em; padding-top: 3px;"></i> Register

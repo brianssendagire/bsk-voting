@@ -18,6 +18,7 @@ def localize_date(date):
 def calculate_tomorrow(date):
     return date + relativedelta.relativedelta(days=1)
 
+
 def current_time():
     return pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now(), is_dst=None)
 
@@ -180,6 +181,14 @@ def icon_color(status):
         color = "green-text text-darken-1"
     elif status in ["Yes", "Reject", "Rejected", "Defer", "Deferred", "Flag as Inappropriate"]:
         color = "red-text"
+    return color
+
+
+@register.filter(name="percentage_color")
+def percentage_color(percentage):
+    color = "green-text text-darken-2"
+    if percentage < 50:
+        color = 'red-text text-darken-2'
     return color
 
 
@@ -346,7 +355,6 @@ def director_designated_url(letter):
     elif letter.director_status == 'Pending' and letter.task_owner_status == 'Accept':
         url = 'processes:director_letter_detail'
     return url
-
 
 
 @register.filter(name='letter_viewers')

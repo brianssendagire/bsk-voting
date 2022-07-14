@@ -13,8 +13,8 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.cache import never_cache
 
-from .forms import OptionForm, RegisterForm
-from .utils import find_student, check_student_exists, populate_nominees, get_details, check_vote_status, check_nominee_status, check_nominee_validity
+from .forms import OptionForm, RegisterForm, ResultsForm
+from .utils import find_student, check_student_exists, populate_nominees, get_details, check_vote_status, check_nominee_status, check_nominee_validity, populate_results
 
 
 def logout_view(request):
@@ -52,6 +52,25 @@ class HomeView(View):
                     return JsonResponse({'status': status, 'message': message})
         else:
             return JsonResponse({'status': 500, 'message': form.errors.as_json()})
+
+
+@method_decorator([never_cache], 'dispatch')
+class ResultsView(View):
+    template_name = "results.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        form = ResultsForm(request.GET)
+        context['filter_form'] = form
+        context['title'] = 'Results'
+        if form.is_valid():
+            post = form.cleaned_data.get('post')
+            if post:
+                candidates = populate_results(post)
+                context['candidates'] = candidates
+                context['title'] = post.title()
+
+        return render(request, self.template_name, context)
 
 
 @method_decorator([never_cache], 'dispatch')

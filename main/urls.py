@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from voting.views import logout_view, FAQView, HomeView, RegisterView, compute_option, get_nominees, verify_id
+from voting.views import logout_view, FAQView, HomeView, RegisterView, compute_option, get_nominees, verify_id, ResultsView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('results/', ResultsView.as_view(), name='results'),
     path('admin/', admin.site.urls),
     path('logout/', logout_view, name="logout"),
     path('verify_id/', verify_id, name="verify_id"),

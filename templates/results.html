@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load material_form %}
+{% load custom_tags %}
+{% block content %}
+{% include 'snippets/home_styles.html' %}
+<div class="container">
+    <div class="mt30">
+
+        <div class="row">
+            <div class="col s12">
+                <h4>Results</h4>
+                {% include 'snippets/home_basic_filters.html' %}
+                {% if candidates %}
+                <div class="card material-table mt20">
+                    <div class="table-header">
+                        <span class="table-title">{{title}}</span>
+                        <div class="actions">
+                            <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i
+                                    class="material-icons">search</i></a>
+                        </div>
+                    </div>
+                    <table class="datatable">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th class="hide-on-med-and-down">ID</th>
+                            <th class="hide-on-med-and-down">Post</th>
+                            <th class="hide-on-med-and-down">Class</th>
+                            <th class="hide-on-med-and-down">Votes</th>
+                            <th class="hide-on-med-and-down">WIN %</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for candidate in candidates %}
+                        <tr>
+                            <td>{{ candidate.name }}</td>
+                            <td class="hide-on-med-and-down">{{ candidate.id }}</td>
+                            <td class="hide-on-med-and-down">{{ candidate.post }}</td>
+                            <td class="hide-on-med-and-down">{{ candidate.class|capfirst }}</td>
+                            <td class="hide-on-med-and-down">
+                                <span class="{{ candidate.status|icon_color }}">{{candidate.votes}}</span>
+                            </td>
+                            <td><span class="{{ candidate.percentage|percentage_color }}">{{ candidate.percentage }}%</span></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="card darken-1 z-depth-2 mt20">
+                    <div class="card-content pt10">
+                        <h5 class="card-title" style="font-weight: 600;">Results</h5>
+                        <div class="divider"></div>
+                        <div style="min-height: 15vh;">
+                            <p style="margin-top: 2%;">There are no results to show. Choose a post from the dropdown.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelector('#id_post_container').classList.add('m12');
+
+</script>
+{% endblock content %}

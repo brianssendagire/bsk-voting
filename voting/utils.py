@@ -1,4 +1,5 @@
 import os
+from itertools import groupby
 
 from django.conf import settings
 
@@ -135,3 +136,45 @@ def populate_nominees(post, student_id):
                     else:
                         nominees.append({'id': student_id, 'name': name})
     return nominees
+
+
+def populate_results(post):
+    file_path = os.path.join(settings.STATIC_ROOT, 'files/VOTERS.txt')
+    candidates = []
+
+    with open(file_path, 'rb') as f:
+        for line in f.readlines():
+            line = line.decode('utf8').strip().split(',')
+            if post == line[1]:
+                # Student ID, Name, Class, Votes, Percentage
+                cid = line[2]  # get candidate id e.g. GW256SI
+                exists, student = get_details(cid)
+                name = student['first_name'] + ' ' + student['last_name']
+                cl = student['year']
+                # votes are counted using id
+                obj = {'id': cid, 'name': name, 'class': cl, 'post': post}
+                candidates.append(obj)
+    return generate_grouped_candidates(candidates, len(candidates))
+
+
+def generate_grouped_candidates(candidates, total):
+    cs = []
+    for k, g in groupby(sorted(candidates, key=key_fn), key_fn):
+        _g = list(g)
+        votes = len(_g)
+        obj = {
+            'id': k,
+            'name': _g[0].get('name', 'N/A'),
+            'class': _g[0].get('class', 'N/A'),
+            'post': _g[0].get('post', 'N/A'),
+            'votes': votes,
+            'percentage': round(get_percentage(votes, total), 2)
+        }
+        cs.append(obj)
+    return cs
+
+
+def key_fn(x): return x['id']
+
+
+def get_percentage(votes, total): return (votes / total) * 100
